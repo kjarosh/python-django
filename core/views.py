@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.exceptions import SuspiciousOperation
 from django.db import transaction
@@ -164,3 +165,16 @@ def thread(request, tid):
     
     context = { 'posts': posts, 'thread': thread }
     return render(request, 'thread.html', context)
+
+
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/accounts/login')
+    else:
+        form = UserCreationForm()
+    
+    return render(request, 'signup.html', { 'form': form })
+

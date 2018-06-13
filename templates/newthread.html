@@ -6,8 +6,8 @@
 	<form action="/newthread/" method="post">
 		{% csrf_token %}
 		<input type="hidden" name="sid" value="{{ sectionid }}"/>
-		<input name="title" placeholder="Title"/><br/>
-		<textarea name="content" placeholder="Content"></textarea><br/>
+		<input name="title" placeholder="Title" required autofocus/><br/>
+		<textarea name="content" placeholder="Content" required></textarea><br/>
 		<input type="submit"/>
 	</form>
 {% endblock %}

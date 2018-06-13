@@ -87,3 +87,15 @@ a:hover {
 	text-align: center;
 	margin: 40px;
 }
+
+.errorlist {
+	color: red;
+}
+
+.helptext {
+	color: #666;
+	display: block;
+	margin-top: 10px;
+	margin-bottom: 30px;
+	font-size: 0.8em;
+}
