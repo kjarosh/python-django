@@ -24,14 +24,15 @@ def get_active_thread_list(thread_from, thread_to, sectionid=None):
         threads = threads.filter(thread__section_id=sectionid)
     
     threads = threads \
-        .values('thread__id', 'thread__title', 'thread__creator__username') \
+        .values('time_posted', 'thread__id', 'thread__title', 'thread__creator__username') \
         .annotate(last_date=Max('time_posted')) \
         .order_by('-last_date')[thread_from:thread_to]
     
     return [ {
         'title': thread['thread__title'],
         'id': thread['thread__id'],
-        'author': thread['thread__creator__username']
+        'author': thread['thread__creator__username'],
+        'datetime': thread['time_posted']
     } for thread in threads ]
 
 

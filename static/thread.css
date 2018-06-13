@@ -1,3 +1,7 @@
+.thread-list {
+	width: 100%;
+}
+
 .thread-post {
 	display: flex;
 	flex-direction: row;
@@ -27,4 +31,39 @@
 
 .thread-post:nth-child(odd) {
 	background-color: var(--color-secondary);
+}
+
+.newthread-form input[name="title"] {
+	width: 100%;
+	margin-bottom: 30px;
+	font-size: 1.2em;
+}
+
+.newthread-form textarea[name="content"], .thread-reply {
+	width: 100%;
+	min-width: 100%;
+	max-width: 100%;
+	min-height: 50px;
+}
+
+
+.thread-list {
+	width: 100%;
+	margin: 10px 0;
+}
+
+.thread-list td {
+	padding: 6px;
+}
+
+.thread-entry-title {
+	width: 65%;
+}
+
+.thread-entry-author {
+	width: 15%;
+}
+
+.thread-entry-date {
+	width: 20%;
 }

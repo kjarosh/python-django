@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-{% block title %}{{ thread_title }} &ndash; Forum{% endblock %}
+{% load humanize %}
+{% block title %}Thread list{% endblock %}
 
 {% block content %}
 	{% if section %}
@@ -12,13 +13,14 @@
 	
 	<table class="thread-list">
 		{% if threads %}
-			<tr class="thread-entry-head"><th>Title</th><th>Author</th></tr>
+			<tr class="thread-entry-head"><th>Title</th><th>Author</th><th>Activity</th></tr>
 		{% endif %}
 		
 		{% for thread in threads %}
 		<tr class="thread-entry">
 			<td class="thread-entry-title"><a href="/threads/{{ thread.id }}">{{ thread.title }}</a></td>
 			<td class="thread-entry-author">{{ thread.author }}</td>
+				<td class="thread-entry-date">{{ thread.datetime|naturaltime }}</td>
 		</tr>
 		{% empty %}
 			No threads.

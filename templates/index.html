@@ -1,20 +1,22 @@
 {% extends 'base.html' %}
-{% block title %}Index{% endblock %}
+{% load humanize %}
+{% block title %}Forum{% endblock %}
 
 {% block content %}
 	<h3 class="section-name">Active Threads</h3>
 	<table class="thread-list">
 		{% if activethreads %}
-			<tr class="thread-entry-head"><th>Title</th><th>Author</th></tr>
+			<tr class="thread-entry-head"><th>Title</th><th>Author</th><th>Activity</th></tr>
 		{% endif %}
 		
 		{% for thread in activethreads %}
 			<tr class="thread-entry">
 				<td class="thread-entry-title"><a href="/threads/{{ thread.id }}">{{ thread.title }}</a></td>
 				<td class="thread-entry-author">{{ thread.author }}</td>
+				<td class="thread-entry-date">{{ thread.datetime|naturaltime }}</td>
 			</tr>
 		{% empty %}
-			No threads.
+			<tr><td>No threads.</td></tr>
 		{% endfor %}
 	</table>
 	<div class="right-op">
@@ -28,16 +30,17 @@
 		
 		<table class="thread-list">
 			{% if section.threads %}
-				<tr class="thread-entry-head"><th>Title</th><th>Author</th></tr>
+				<tr class="thread-entry-head"><th>Title</th><th>Author</th><th>Activity</th></tr>
 			{% endif %}
 			
 			{% for thread in section.threads %}
 				<tr class="thread-entry">
 					<td class="thread-entry-title"><a href="/threads/{{ thread.id }}">{{ thread.title }}</a></td>
 					<td class="thread-entry-author">{{ thread.author }}</td>
+					<td class="thread-entry-date">{{ thread.datetime|naturaltime }}</td>
 				</tr>
 			{% empty %}
-				No threads.
+				<tr><td>No threads.</td></tr>
 			{% endfor %}
 		</table>
 		<div class="right-op">

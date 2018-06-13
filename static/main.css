@@ -31,23 +31,6 @@ a:hover {
 	position:relative;
 }
 
-.thread-list {
-	width: 100%;
-	margin: 10px 0;
-}
-
-.thread-list td {
-	padding: 6px;
-}
-
-.thread-entry-title {
-	width: 80%;
-}
-
-.thread-entry-author {
-	width: 80%;
-}
-
 .new-thread {
 	font-size: 70%;
 	font-weight: normal;

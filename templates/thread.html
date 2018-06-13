@@ -19,7 +19,7 @@
 		<form action="/post/?next={{ request.path }}" method="post">
 			{% csrf_token %}
 			<input type="hidden" name="tid" value="{{ thread.id }}"/>
-			<textarea name="content" placeholder="Content" required></textarea>
+			<textarea class="thread-reply" name="content" placeholder="Content" required></textarea>
 			<input type="submit"/>
 		</form>
 	{% endif %}
