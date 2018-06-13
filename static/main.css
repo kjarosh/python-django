@@ -82,3 +82,8 @@ a:hover {
 	margin-bottom: 30px;
 	font-size: 0.8em;
 }
+
+div.clear-bar {
+	height: 10px;
+	width: 100%;
+}

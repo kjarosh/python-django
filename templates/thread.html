@@ -14,13 +14,32 @@
 		</div>
 	{% endfor %}
 	
+	<div class="clear-bar"></div>
+	
+	{% if prev or prev == 0 %}
+		<a href="?page={{ prev }}">&larr; Previous page</a>
+	{% endif %}
+	
+	{% if next %}
+		<div style="float:right">
+			<a href="?page={{ next }}">Next page &rarr;</a>
+		</div>
+	{% endif %}
+	
+	<div class="clear-bar"></div>
+	
 	{% if user.is_authenticated %}
-		<h5>Response</h5>
-		<form action="/post/?next={{ request.path }}" method="post">
-			{% csrf_token %}
-			<input type="hidden" name="tid" value="{{ thread.id }}"/>
-			<textarea class="thread-reply" name="content" placeholder="Content" required></textarea>
-			<input type="submit"/>
-		</form>
+		{% if not next %}
+			<h5>Response</h5>
+			<form action="/post/?next={{ request.get_full_path }}" method="post">
+				{% csrf_token %}
+				<input type="hidden" name="tid" value="{{ thread.id }}"/>
+				<textarea class="thread-reply" name="content" placeholder="Content" required></textarea>
+				<input type="submit"/>
+			</form>
+		{% endif %}
+	{% else %}
+		<a href="/accounts/login/?next={{ request.path }}">login</a>
+		or <a href="/accounts/signup/">sign up</a> to post a reply
 	{% endif %}
 {% endblock %}

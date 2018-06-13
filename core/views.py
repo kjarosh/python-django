@@ -16,6 +16,14 @@ from core.models import Thread, Post, Section
 def render_error(request, error):
     return render(request, 'error-page.html', { 'error': error }, status=400)
 
+def get_page_number(request):
+    try:
+        page = int(request.GET.get('page', '0'))
+    except:
+        raise Http404
+    if page < 0:
+        raise Http404
+    return page
 
 def get_active_thread_list(thread_from, thread_to, sectionid=None):
     threads = Post.objects
@@ -134,9 +142,7 @@ def threads(request):
     except:
         section = None
     
-    page = int(request.GET.get('page', '0'))
-    if page < 0:
-        raise Http404
+    page = get_page_number(request)
     
     thread_from = page * CoreConfig.threads_per_page
     thread_to = thread_from + CoreConfig.threads_per_page
@@ -166,11 +172,10 @@ def threads(request):
     return render(request, 'threads.html', context)
 
 
+
+
 def thread(request, tid):
-    try:
-        page = int(request.GET.get('page', '0'))
-    except:
-        raise Http404
+    page = get_page_number(request)
     
     try:
         thread = Thread.objects.get(id=tid)
@@ -181,12 +186,29 @@ def thread(request, tid):
     post_to = post_from + CoreConfig.posts_per_page
     posts = Post.objects \
         .filter(thread=tid) \
-        .order_by('time_posted')[post_from:post_to]
+        .order_by('time_posted')[post_from:post_to+1]
     
     if len(posts) == 0:
         raise Http404
     
-    context = { 'posts': posts, 'thread': thread }
+    more = (len(posts) == post_to - post_from + 1)
+    posts = posts[0:post_to - post_from]
+    
+    prev = None
+    next = None
+    
+    if page > 0:
+        prev = page - 1
+    
+    if more:
+        next = page + 1
+    
+    context = {
+        'posts': posts,
+        'thread': thread,
+        'prev': prev,
+        'next': next
+    }
     return render(request, 'thread.html', context)
 
 
