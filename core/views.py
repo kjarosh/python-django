@@ -24,7 +24,7 @@ def get_active_thread_list(thread_from, thread_to, sectionid=None):
         threads = threads.filter(thread__section_id=sectionid)
     
     threads = threads \
-        .values('time_posted', 'thread__id', 'thread__title', 'thread__creator__username') \
+        .values('thread__id', 'thread__title', 'thread__creator__username') \
         .annotate(last_date=Max('time_posted')) \
         .order_by('-last_date')[thread_from:thread_to + 1]
     
@@ -36,7 +36,7 @@ def get_active_thread_list(thread_from, thread_to, sectionid=None):
         'title': thread['thread__title'],
         'id': thread['thread__id'],
         'author': thread['thread__creator__username'],
-        'datetime': thread['time_posted']
+        'datetime': thread['last_date']
     } for thread in threads ], more
 
 
@@ -83,6 +83,7 @@ def post(request):
 
 
 def newthread(request):
+
     def default_post_page():
         sectionid = request.GET.get('sid')
         if sectionid is None:
@@ -146,10 +147,20 @@ def threads(request):
         section.id if section else None
     )
     
+    prev = None
+    next = None
+    
+    if page > 0:
+        prev = page - 1
+    
+    if more:
+        next = page + 1
+    
     context = {
         'threads': threads,
-        'more': more,
-        'section': section
+        'section': section,
+        'prev': prev,
+        'next': next
     }
     
     return render(request, 'threads.html', context)

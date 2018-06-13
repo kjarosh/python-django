@@ -27,13 +27,13 @@
 		{% endfor %}
 	</table>
 	
-	{% if request.GET.page|add:'0' > 0 %}
-		<a href="?page={{ request.GET.page|add:'-1' }}">&larr; Previous page</a>
+	{% if prev or prev == 0 %}
+		<a href="?page={{ prev }}">&larr; Previous page</a>
 	{% endif %}
 	
-	{% if more %}
+	{% if next %}
 		<div style="float:right">
-			<a href="?page={{ request.GET.page|add:'1' }}">Next page &rarr;</a>
+			<a href="?page={{ next }}">Next page &rarr;</a>
 		</div>
 	{% endif %}
 {% endblock %}
