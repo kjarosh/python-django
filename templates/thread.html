@@ -1,15 +1,22 @@
 {% extends 'base.html' %}
-{% block title %}{{ thread_title }} &ndash; Forum{% endblock %}
+{% block title %}{{ thread.title }} &ndash; Forum{% endblock %}
 
 {% block content %}
 	<h2>{{ thread.title }}</h2>
 	{% for post in posts %}
-		{{ post.author.username }} &mdash; {{ post.content }} <br/>
+		<div class="thread-post">
+			<div class="post-author">
+				{{ post.author.username }}
+			</div>
+			<div class="post-content">
+				{{ post.content }}
+			</div>
+		</div>
 	{% endfor %}
 	
 	{% if user.is_authenticated %}
 		<h5>Response</h5>
-		<form action="/post/?next={{ request.path }}" method="post" >
+		<form action="/post/?next={{ request.path }}" method="post">
 			{% csrf_token %}
 			<input type="hidden" name="tid" value="{{ thread.id }}"/>
 			<textarea name="content" placeholder="Content"></textarea>

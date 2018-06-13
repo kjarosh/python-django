@@ -12,6 +12,10 @@ from core.apps import CoreConfig
 from core.models import Thread, Post, Section
 
 
+def render_error(request, error):
+    return render(request, 'error-page.html', { 'error': error }, status=400)
+
+
 def get_active_thread_list(thread_from, thread_to, sectionid=None):
     threads = Post.objects
     
@@ -41,7 +45,7 @@ def index(request):
         })
     
     context = {
-        'activethreads': get_active_thread_list(0, 10),
+        'activethreads': get_active_thread_list(0, 5),
         'sections': sections
     }
     
@@ -56,11 +60,11 @@ def post(request):
     try:
         tid = int(request.POST.get('tid'))
     except:
-        return HttpResponse('no thread id supplied')
+        return render_error(request, 'No thread id supplied')
     
     content = request.POST.get('content')
-    if content is None:
-        return HttpResponse('no content supplied')
+    if not content:
+        return render_error(request, 'No content supplied')
     
     thread = Thread.objects.get(id=tid)
     post = Post(thread=thread, content=content, author=current_user)
@@ -74,7 +78,7 @@ def newthread(request):
     def default_post_page():
         sectionid = request.GET.get('sid')
         if sectionid is None:
-            return HttpResponse('no section id supplied')
+            return render_error(request, 'No section id supplied')
         
         return render(request, 'newthread.html', {
             'sectionid': sectionid
@@ -91,7 +95,10 @@ def newthread(request):
     
     title = request.POST.get('title')
     content = request.POST.get('content')
-    if content is None or title is None:
+    if content == '' or title == '':
+        return render_error(request, 'No title or content supplied')
+    
+    if not content or not title:
         return default_post_page()
     
     try:
@@ -114,14 +121,23 @@ def newthread(request):
 
 def threads(request):
     try:
-        page = int(request.GET.get('page', '0'))
+        section = Section.objects.get(id=request.GET.get('sid'))
     except:
-        raise Http404
+        section = None
+    
+    page = int(request.GET.get('page', '0'))
     
     thread_from = page * CoreConfig.threads_per_page
     thread_to = thread_from + CoreConfig.threads_per_page
     
-    context = { 'threads': get_active_thread_list(thread_from, thread_to) }
+    context = {
+        'threads': get_active_thread_list(
+            thread_from,
+            thread_to,
+            section.id if section else None
+        ),
+        'section': section
+    }
     
     return render(request, 'threads.html', context)
 

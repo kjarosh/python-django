@@ -1,6 +1,7 @@
 @charset "UTF-8";
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 @import url('decorations.css');
+@import url('thread.css');
 
 :root {
     --color-accent: rgb(70, 140, 252);
@@ -73,4 +74,16 @@ a:hover {
 
 .right-op {
 	text-align: right;
+}
+
+.footer {
+	height: 40px;
+	width: 100%;
+}
+
+.error {
+	color: red;
+	font-size: 1.2em;
+	text-align: center;
+	margin: 40px;
 }

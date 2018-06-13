@@ -2,7 +2,14 @@
 {% block title %}{{ thread_title }} &ndash; Forum{% endblock %}
 
 {% block content %}
-	<h3>Thread List</h3>
+	{% if section %}
+		<h3 class="section-name">{{ section.name }}
+			<span class="new-thread"><a href="/newthread/?sid={{ section.id }}">new thread</a></span></h3>
+		<span class="section-desc">{{ section.description }}</span>
+	{% else %}
+		<h3>Global Thread List</h3>
+	{% endif %}
+	
 	<table class="thread-list">
 		{% if threads %}
 			<tr class="thread-entry-head"><th>Title</th><th>Author</th></tr>

@@ -1,0 +1,30 @@
+.thread-post {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	align-items: flex-start;
+}
+
+.post-author {
+	order: 0;
+	width: 20%;
+}
+
+.post-content {
+	order: 1;
+}
+
+
+.post-author, .post-content {
+	padding: 10px;
+}
+
+.thread-post:nth-child(even) {
+	background-color: var(--color-secondary);
+	filter: brightness(95%);
+}
+
+.thread-post:nth-child(odd) {
+	background-color: var(--color-secondary);
+}

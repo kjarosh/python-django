@@ -2,7 +2,7 @@
 {% block title %}Index{% endblock %}
 
 {% block content %}
-	<h4 class="section-name">Active Threads</h4>
+	<h3 class="section-name">Active Threads</h3>
 	<table class="thread-list">
 		{% if activethreads %}
 			<tr class="thread-entry-head"><th>Title</th><th>Author</th></tr>
@@ -17,6 +17,9 @@
 			No threads.
 		{% endfor %}
 	</table>
+	<div class="right-op">
+		<a href="/threads/">See more &rarr;</a>
+	</div>
 	
 	{% for section in sections %}
 		<h3 class="section-name">{{ section.name }}
