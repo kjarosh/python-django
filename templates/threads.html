@@ -26,4 +26,14 @@
 			No threads.
 		{% endfor %}
 	</table>
+	
+	{% if request.GET.page|add:'0' > 0 %}
+		<a href="?page={{ request.GET.page|add:'-1' }}">&larr; Previous page</a>
+	{% endif %}
+	
+	{% if more %}
+		<div style="float:right">
+			<a href="?page={{ request.GET.page|add:'1' }}">Next page &rarr;</a>
+		</div>
+	{% endif %}
 {% endblock %}

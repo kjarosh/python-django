@@ -26,28 +26,34 @@ def get_active_thread_list(thread_from, thread_to, sectionid=None):
     threads = threads \
         .values('time_posted', 'thread__id', 'thread__title', 'thread__creator__username') \
         .annotate(last_date=Max('time_posted')) \
-        .order_by('-last_date')[thread_from:thread_to]
+        .order_by('-last_date')[thread_from:thread_to + 1]
+    
+    more = (len(threads) == thread_to - thread_from + 1)
+    
+    threads = threads[0:thread_to - thread_from]
     
     return [ {
         'title': thread['thread__title'],
         'id': thread['thread__id'],
         'author': thread['thread__creator__username'],
         'datetime': thread['time_posted']
-    } for thread in threads ]
+    } for thread in threads ], more
 
 
 def index(request):
     sections = []
     for section in Section.objects.all():
+        threads, more = get_active_thread_list(0, 5, section.id)
         sections.append({
             'id': section.id,
             'name': section.name,
             'description': section.description,
-            'threads': get_active_thread_list(0, 5, section.id)
+            'threads': threads
         })
     
+    threads, more = get_active_thread_list(0, 5)
     context = {
-        'activethreads': get_active_thread_list(0, 5),
+        'activethreads': threads,
         'sections': sections
     }
     
@@ -128,16 +134,21 @@ def threads(request):
         section = None
     
     page = int(request.GET.get('page', '0'))
+    if page < 0:
+        raise Http404
     
     thread_from = page * CoreConfig.threads_per_page
     thread_to = thread_from + CoreConfig.threads_per_page
     
+    threads, more = get_active_thread_list(
+        thread_from,
+        thread_to,
+        section.id if section else None
+    )
+    
     context = {
-        'threads': get_active_thread_list(
-            thread_from,
-            thread_to,
-            section.id if section else None
-        ),
+        'threads': threads,
+        'more': more,
         'section': section
     }
     
