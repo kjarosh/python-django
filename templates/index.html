@@ -2,8 +2,43 @@
 {% block title %}Index{% endblock %}
 
 {% block content %}
-	{% include 'thread-list.html' %}
+	<h4 class="section-name">Active Threads</h4>
+	<table class="thread-list">
+		{% if activethreads %}
+			<tr class="thread-entry-head"><th>Title</th><th>Author</th></tr>
+		{% endif %}
+		
+		{% for thread in activethreads %}
+			<tr class="thread-entry">
+				<td class="thread-entry-title"><a href="/threads/{{ thread.id }}">{{ thread.title }}</a></td>
+				<td class="thread-entry-author">{{ thread.author }}</td>
+			</tr>
+		{% empty %}
+			No threads.
+		{% endfor %}
+	</table>
 	
-	<a href="/post/">Post a new thread</a> or
-	<a href="/threads/">See more &rarr;</a>
+	{% for section in sections %}
+		<h3 class="section-name">{{ section.name }}
+			<span class="new-thread"><a href="/newthread/?sid={{ section.id }}">new thread</a></span></h3>
+		<span class="section-desc">{{ section.description }}</span>
+		
+		<table class="thread-list">
+			{% if section.threads %}
+				<tr class="thread-entry-head"><th>Title</th><th>Author</th></tr>
+			{% endif %}
+			
+			{% for thread in section.threads %}
+				<tr class="thread-entry">
+					<td class="thread-entry-title"><a href="/threads/{{ thread.id }}">{{ thread.title }}</a></td>
+					<td class="thread-entry-author">{{ thread.author }}</td>
+				</tr>
+			{% empty %}
+				No threads.
+			{% endfor %}
+		</table>
+		<div class="right-op">
+			<a href="/threads/?sid={{ section.id }}">See more &rarr;</a>
+		</div>
+	{% endfor %}
 {% endblock %}

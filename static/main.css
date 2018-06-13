@@ -46,3 +46,31 @@ a:hover {
 .thread-entry-author {
 	width: 80%;
 }
+
+.new-thread {
+	font-size: 70%;
+	font-weight: normal;
+}
+
+.new-thread:before {
+	content: '(';
+}
+
+.new-thread:after {
+	content: ')';
+}
+
+.section-name {
+	margin-bottom: 0px;
+}
+
+.section-desc {
+	font-size: 80%;
+	color: #666;
+	margin-bottom: 20px;
+	margin-top: 10px;
+}
+
+.right-op {
+	text-align: right;
+}
