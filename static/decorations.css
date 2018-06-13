@@ -1,0 +1,59 @@
+
+html, body {
+	margin: 0px;
+	padding: 0px;
+}
+
+.accent-bar {
+	background-color: var(--color-accent);
+	height: 5px;
+	width: 100%;
+}
+
+.header-wrapper {
+	width: 100%;
+	background-color: var(--color-secondary);
+}
+
+.header .login-info {
+	position: absolute;
+	right: 5px;
+	top: 5px;
+	
+	width: 25%;
+	text-align: right;
+	
+	margin-left: auto;
+	margin-right: 0px;
+	vertical-align: middle;
+}
+
+.header ul.links {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.header ul.links li {
+	display: inline-block;
+	padding: 0 10px 0 0;
+	margin: 0;
+}
+
+.header {
+	padding: 5px;
+	position: relative;
+}
+
+.thread-entry-head {
+	background-color: var(--color-secondary);
+	filter: brightness(90%);
+}
+
+.thread-entry:nth-child(even) {
+	background-color: white;
+}
+
+.thread-entry:nth-child(odd) {
+	background-color: var(--color-secondary);
+}

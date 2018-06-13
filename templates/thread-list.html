@@ -1,0 +1,15 @@
+<h3>Thread List</h3>
+<table class="thread-list">
+	{% if threads %}
+		<tr class="thread-entry-head"><th>Title</th><th>Author</th></tr>
+	{% endif %}
+	
+	{% for thread in threads %}
+	<tr class="thread-entry">
+		<td class="thread-entry-title"><a href="/threads/{{ thread.id }}">{{ thread.title }}</a></td>
+		<td class="thread-entry-author">{{ thread.author }}</td>
+	</tr>
+	{% empty %}
+		No threads.
+	{% endfor %}
+</table>

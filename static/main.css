@@ -1,0 +1,48 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import url('decorations.css');
+
+:root {
+    --color-accent: rgb(70, 140, 252);
+    --color-secondary: rgb(240, 240, 240);
+    
+    --content-width: 800px;
+}
+
+html {
+	font-family: 'Open Sans', sans-serif;
+}
+
+a {
+	color: var(--color-accent);
+	text-decoration: none;
+}
+
+a:hover {
+	filter: brightness(85%);
+}
+
+.content {
+	width: var(--content-width);
+	margin-left: auto;
+	margin-right: auto;
+	
+	position:relative;
+}
+
+.thread-list {
+	width: 100%;
+	margin: 10px 0;
+}
+
+.thread-list td {
+	padding: 6px;
+}
+
+.thread-entry-title {
+	width: 80%;
+}
+
+.thread-entry-author {
+	width: 80%;
+}
