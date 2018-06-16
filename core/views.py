@@ -6,7 +6,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.exceptions import SuspiciousOperation
 from django.db import transaction
-from django.db.models.aggregates import Max
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect, reverse
 
@@ -28,33 +27,10 @@ def get_page_number(request):
     return page
 
 
-def get_active_thread_list(thread_from, thread_to, sectionid=None):
-    threads = Post.objects
-    
-    if sectionid:
-        threads = threads.filter(thread__section_id=sectionid)
-    
-    threads = threads \
-        .values('thread__id', 'thread__title', 'thread__creator__username') \
-        .annotate(last_date=Max('time_posted')) \
-        .order_by('-last_date')[thread_from:thread_to + 1]
-    
-    more = (len(threads) == thread_to - thread_from + 1)
-    
-    threads = threads[0:thread_to - thread_from]
-    
-    return [ {
-        'title': thread['thread__title'],
-        'id': thread['thread__id'],
-        'author': thread['thread__creator__username'],
-        'datetime': thread['last_date']
-    } for thread in threads ], more
-
-
 def index(request):
     sections = []
     for section in Section.objects.all():
-        threads, more = get_active_thread_list(0, 5, section.id)
+        threads, more = Thread.objects.active_threads(0, 5, section.id)
         sections.append({
             'id': section.id,
             'name': section.name,
@@ -62,7 +38,7 @@ def index(request):
             'threads': threads
         })
     
-    threads, more = get_active_thread_list(0, 5)
+    threads, more = Thread.objects.active_threads(0, 5)
     context = {
         'activethreads': threads,
         'sections': sections
@@ -139,7 +115,7 @@ def threads(request, sid=None):
     thread_from = page * CoreConfig.threads_per_page
     thread_to = thread_from + CoreConfig.threads_per_page
     
-    threads, more = get_active_thread_list(
+    threads, more = Thread.objects.active_threads(
         thread_from,
         thread_to,
         section.id if section else None
@@ -212,4 +188,3 @@ def signup(request):
         form = UserCreationForm()
     
     return render(request, 'registration/signup.html', { 'form': form })
-

@@ -13,7 +13,7 @@
 			<tr class="thread-entry">
 				<td class="thread-entry-title"><a href="{% url 'thread' thread.id %}">{{ thread.title }}</a></td>
 				<td class="thread-entry-author">{{ thread.author }}</td>
-				<td class="thread-entry-date">{{ thread.datetime|naturaltime }}</td>
+				<td class="thread-entry-date">{{ thread.activity|naturaltime }}</td>
 			</tr>
 		{% empty %}
 			<tr><td>No threads.</td></tr>
@@ -37,7 +37,7 @@
 				<tr class="thread-entry">
 					<td class="thread-entry-title"><a href="{% url 'thread' thread.id %}">{{ thread.title }}</a></td>
 					<td class="thread-entry-author">{{ thread.author }}</td>
-					<td class="thread-entry-date">{{ thread.datetime|naturaltime }}</td>
+					<td class="thread-entry-date">{{ thread.activity|naturaltime }}</td>
 				</tr>
 			{% empty %}
 				<tr><td>No threads.</td></tr>
