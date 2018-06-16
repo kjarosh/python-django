@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.exceptions import SuspiciousOperation
@@ -70,10 +71,9 @@ def index(request):
     return render(request, 'index.html', context)
 
 
+@login_required
 def post(request):
     current_user = request.user
-    if not current_user.is_authenticated:
-        return redirect('/accounts/login/?next=' + reverse('post'))
     
     try:
         tid = int(request.POST.get('tid'))
@@ -88,29 +88,19 @@ def post(request):
     post = Post(thread=thread, content=content, author=current_user)
     post.save()
     
-    next = request.GET.get('next', '/threads/%d' % thread.id)
+    next = request.GET.get('next', reverse('thread', thread.id))
     return redirect(next)
 
 
-def newthread(request):
+@login_required
+def newthread(request, sid):
 
     def default_post_page():
-        sectionid = request.GET.get('sid')
-        if sectionid is None:
-            return render_error(request, 'No section id supplied')
-        
         return render(request, 'newthread.html', {
-            'sectionid': sectionid
+            'sectionid': sid
         })
     
     current_user = request.user
-    if not current_user.is_authenticated:
-        return redirect('/accounts/login/?next=' + reverse('post'))
-    
-    try:
-        sid = int(request.POST.get('sid'))
-    except:
-        return default_post_page()
     
     title = request.POST.get('title')
     content = request.POST.get('content')
@@ -133,14 +123,14 @@ def newthread(request):
     post = Post(thread=thread, content=content, author=current_user)
     post.save()
     
-    next = request.GET.get('next', '/threads/%d' % thread.id)
+    next = request.GET.get('next', reverse('thread', args=[thread.id]))
     
     return redirect(next)
 
 
-def threads(request):
+def threads(request, sid=None):
     try:
-        section = Section.objects.get(id=request.GET.get('sid'))
+        section = Section.objects.get(id=sid)
     except:
         section = None
     
@@ -217,7 +207,7 @@ def signup(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/accounts/login')
+            return redirect(reverse('login'))
     else:
         form = UserCreationForm()
     

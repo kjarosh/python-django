@@ -31,7 +31,7 @@
 	{% if user.is_authenticated %}
 		{% if not next %}
 			<h5>Response</h5>
-			<form action="/post/?next={{ request.get_full_path }}" method="post">
+			<form action="{% url 'post' %}?next={{ request.get_full_path }}" method="post">
 				{% csrf_token %}
 				<input type="hidden" name="tid" value="{{ thread.id }}"/>
 				<textarea class="thread-reply" name="content" placeholder="Content" required></textarea>
@@ -39,7 +39,7 @@
 			</form>
 		{% endif %}
 	{% else %}
-		<a href="/accounts/login/?next={{ request.path }}">login</a>
-		or <a href="/accounts/signup/">sign up</a> to post a reply
+		<a href="{% url 'login' %}?next={{ request.path }}">login</a>
+		or <a href="{% url 'signup' %}">sign up</a> to post a reply
 	{% endif %}
 {% endblock %}

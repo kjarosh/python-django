@@ -11,7 +11,7 @@
 		
 		{% for thread in activethreads %}
 			<tr class="thread-entry">
-				<td class="thread-entry-title"><a href="/threads/{{ thread.id }}">{{ thread.title }}</a></td>
+				<td class="thread-entry-title"><a href="{% url 'thread' thread.id %}">{{ thread.title }}</a></td>
 				<td class="thread-entry-author">{{ thread.author }}</td>
 				<td class="thread-entry-date">{{ thread.datetime|naturaltime }}</td>
 			</tr>
@@ -20,12 +20,12 @@
 		{% endfor %}
 	</table>
 	<div class="right-op">
-		<a href="/threads/">See more &rarr;</a>
+		<a href="{% url 'active_threads' %}">See more &rarr;</a>
 	</div>
 	
 	{% for section in sections %}
 		<h3 class="section-name">{{ section.name }}
-			<span class="new-thread"><a href="/newthread/?sid={{ section.id }}">new thread</a></span></h3>
+			<span class="new-thread"><a href="{% url 'newthread' section.id %}">new thread</a></span></h3>
 		<span class="section-desc">{{ section.description }}</span>
 		
 		<table class="thread-list">
@@ -35,7 +35,7 @@
 			
 			{% for thread in section.threads %}
 				<tr class="thread-entry">
-					<td class="thread-entry-title"><a href="/threads/{{ thread.id }}">{{ thread.title }}</a></td>
+					<td class="thread-entry-title"><a href="{% url 'thread' thread.id %}">{{ thread.title }}</a></td>
 					<td class="thread-entry-author">{{ thread.author }}</td>
 					<td class="thread-entry-date">{{ thread.datetime|naturaltime }}</td>
 				</tr>
@@ -44,7 +44,7 @@
 			{% endfor %}
 		</table>
 		<div class="right-op">
-			<a href="/threads/?sid={{ section.id }}">See more &rarr;</a>
+			<a href="{% url 'section_threads' section.id %}">See more &rarr;</a>
 		</div>
 	{% endfor %}
 {% endblock %}

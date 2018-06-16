@@ -3,9 +3,8 @@
 
 {% block content %}
 	<h2>New thread</h2>
-	<form action="/newthread/" method="post" class="newthread-form">
+	<form action="{% url 'newthread' sectionid %}" method="post" class="newthread-form">
 		{% csrf_token %}
-		<input type="hidden" name="sid" value="{{ sectionid }}"/>
 		<input name="title" placeholder="Title" required autofocus/><br/>
 		<textarea name="content" placeholder="Content" required></textarea><br/>
 		<input type="submit"/>

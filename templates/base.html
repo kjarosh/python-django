@@ -12,17 +12,17 @@
 		<div class="content">
 			<div class="header">
 				<ul class="links">
-					<li><a href="/">Home</a></li>
-					<li><a href="/threads/">Threads</a></li>
+					<li><a href="{% url 'index' %}">Home</a></li>
+					<li><a href="{% url 'active_threads' %}">Threads</a></li>
 				</ul>
 				
 				<div class="login-info">
 					{% if user.is_authenticated %}
 						<span class="welcome-message">Hello, {{ user.username }}!</span>
-						<a href="/accounts/logout/?next={{ request.path }}">logout</a>
+						<a href="{% url 'logout' %}?next={{ request.path }}">logout</a>
 					{% else %}
-						<a href="/accounts/login/?next={{ request.path }}">login</a>
-						or <a href="/accounts/signup/">sign up</a>
+						<a href="{% url 'login' %}?next={{ request.path }}">login</a>
+						or <a href="{% url 'signup' %}">sign up</a>
 					{% endif %}
 				</div>
 			</div>
