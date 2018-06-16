@@ -2,8 +2,11 @@
 {% block title %}Create a new thread{% endblock %}
 
 {% block content %}
-	<h2>New thread</h2>
-	<form action="{% url 'newthread' sectionid %}" method="post" class="newthread-form">
+	<h2>New thread in section <em>{{ section.name }}</em></h2>
+	{% if error %}
+		<div class="error">{{ error }}</div>
+	{% endif %}
+	<form action="{% url 'newthread' section.id %}" method="post" class="newthread-form">
 		{% csrf_token %}
 		<input name="title" placeholder="Title" required autofocus/><br/>
 		<textarea name="content" placeholder="Content" required></textarea><br/>

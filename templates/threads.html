@@ -11,6 +11,19 @@
 		<h3>Global Thread List</h3>
 	{% endif %}
 	
+	<div class="right-op">
+		<select class="select-section" data-urlformat="{% url 'section_threads' 0 %}" data-urlreplace="0">
+			<option value="">Select a section</option>
+			{% for s in sections %}
+				{% if s.id == section.id %}
+					<option value="{{ s.id }}" selected>{{ s.name }}</option>
+				{% else %}
+					<option value="{{ s.id }}">{{ s.name }}</option>
+				{% endif %}
+			{% endfor %}
+		</select>
+	</div>
+	
 	<table class="thread-list">
 		{% if threads %}
 			<tr class="thread-entry-head"><th>Title</th><th>Author</th><th>Activity</th></tr>

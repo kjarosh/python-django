@@ -71,9 +71,10 @@ def post(request):
 @login_required
 def newthread(request, sid):
 
-    def default_post_page():
+    def default_post_page(error=None):
         return render(request, 'newthread.html', {
-            'sectionid': sid
+            'error': error,
+            'section': Section.objects.get(id=sid)
         })
     
     current_user = request.user
@@ -81,7 +82,7 @@ def newthread(request, sid):
     title = request.POST.get('title')
     content = request.POST.get('content')
     if content == '' or title == '':
-        return render_error(request, 'No title or content supplied')
+        return default_post_page('No title or content supplied')
     
     if not content or not title:
         return default_post_page()
@@ -133,6 +134,7 @@ def threads(request, sid=None):
     context = {
         'threads': threads,
         'section': section,
+        'sections': Section.objects.all(),
         'prev': prev,
         'next': next
     }
