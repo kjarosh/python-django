@@ -64,7 +64,7 @@ def post(request):
     post = Post(thread=thread, content=content, author=current_user)
     post.save()
     
-    next = request.GET.get('next', reverse('thread', thread.id))
+    next = request.GET.get('next', reverse('thread', args=[thread.id]))
     return redirect(next)
 
 
