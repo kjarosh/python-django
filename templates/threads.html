@@ -5,15 +5,15 @@
 {% block content %}
 	{% if section %}
 		<h3 class="section-name">{{ section.name }}
-			<span class="new-thread"><a href="/newthread/?sid={{ section.id }}">new thread</a></span></h3>
+			<span class="new-thread"><a href="{% url 'newthread' section.id %}">new thread</a></span></h3>
 		<span class="section-desc">{{ section.description }}</span>
 	{% else %}
 		<h3>Global Thread List</h3>
 	{% endif %}
 	
 	<div class="right-op">
-		<select class="select-section" data-urlformat="{% url 'section_threads' 0 %}" data-urlreplace="0">
-			<option value="">Select a section</option>
+		<select class="select-section" data-globalurlformat="{% url 'active_threads' %}" data-urlformat="{% url 'section_threads' 0 %}" data-urlreplace="0">
+			<option value="">Global Threads</option>
 			{% for s in sections %}
 				{% if s.id == section.id %}
 					<option value="{{ s.id }}" selected>{{ s.name }}</option>
@@ -31,7 +31,7 @@
 		
 		{% for thread in threads %}
 		<tr class="thread-entry">
-			<td class="thread-entry-title"><a href="/threads/{{ thread.id }}">{{ thread.title }}</a></td>
+			<td class="thread-entry-title"><a href="{% url 'thread' thread.id %}">{{ thread.title }}</a></td>
 			<td class="thread-entry-author">{{ thread.author }}</td>
 				<td class="thread-entry-date">{{ thread.activity|naturaltime }}</td>
 		</tr>
